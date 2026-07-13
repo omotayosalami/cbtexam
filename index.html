@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CBT Exam">
 <meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
 <title>Ultimate CBT Exam</title>
 <style>
   :root{
@@ -854,6 +855,15 @@ refreshUserList();
 
 // Exposed for debugging in the browser console (harmless, not required for normal use).
 window.__App = { State, DB, SUBJECT_DATA, submitExam, selectQuestions, startExam };
+
+// Register service worker so the app works fully offline after the first visit.
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{
+    navigator.serviceWorker.register("service-worker.js").catch(()=>{
+      // Silently ignore — app still works online without offline caching.
+    });
+  });
+}
 </script>
 </body>
 </html>
